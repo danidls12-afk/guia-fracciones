@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Q+ — Fracciones y Números Decimales</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f0eb; color: #222; }
+
+/* HEADER */
+.header { background: linear-gradient(135deg, #1a5fa8, #0d3d6e); color: #fff; padding: 28px 24px 20px; text-align: center; }
+.header h1 { font-size: 26px; margin-bottom: 6px; }
+.header p { font-size: 14px; opacity: .85; }
+
+/* NAV */
+.nav { background: #fff; border-bottom: 1px solid #ddd; display: flex; overflow-x: auto; gap: 0; position: sticky; top: 0; z-index: 100; }
+.nav-btn { padding: 12px 18px; font-size: 13px; border: none; background: none; cursor: pointer; color: #555; white-space: nowrap; border-bottom: 3px solid transparent; transition: all .2s; }
+.nav-btn:hover { background: #f5f5f0; color: #1a5fa8; }
+.nav-btn.active { color: #1a5fa8; border-bottom-color: #1a5fa8; font-weight: bold; }
+
+/* SECCIONES */
+.seccion { display: none; padding: 20px 16px; max-width: 720px; margin: 0 auto; }
+.seccion.activa { display: block; }
+
+/* CARDS EJERCICIO */
+.card { background: #fff; border-radius: 12px; border: 1px solid #e0e0e0; padding: 18px; margin-bottom: 16px; }
+.card h3 { font-size: 15px; color: #1a5fa8; margin-bottom: 10px; }
+.card p { font-size: 14px; color: #444; line-height: 1.6; margin-bottom: 8px; }
+
+/* REGLA */
+.regla { background: #e8f1fb; border-left: 4px solid #1a5fa8; border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 10px 0; font-size: 14px; color: #1a5fa8; line-height: 1.6; }
+
+/* GRILLAS */
+.grilla-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+.grilla-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
+.grilla-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
+@media(max-width:500px){
+  .grilla-2,.grilla-3,.grilla-4 { grid-template-columns: 1fr 1fr; }
+}
+
+/* FRACCION CARD */
+.fcard {
+  background: #fff; border: 2px solid #ddd; border-radius: 10px;
+  padding: 12px 8px; text-align: center; cursor: pointer; transition: all .2s;
+}
+.fcard:hover { border-color: #aaa; transform: translateY(-1px); }
+.fcard .fn { font-size: 20px; font-weight: bold; color: #333; }
+.fcard .fl { width: 32px; height: 2px; background: #333; margin: 4px auto; }
+.fcard .fd { font-size: 20px; font-weight: bold; color: #333; }
+.fcard .flet { font-size: 11px; color: #999; margin-top: 5px; }
+.fcard.verde { border-color: #2e7d32; background: #e8f5e9; }
+.fcard.verde .fn, .fcard.verde .fd { color: #2e7d32; }
+.fcard.verde .fl { background: #2e7d32; }
+.fcard.rojo { border-color: #c62828; background: #ffebee; }
+.fcard.rojo .fn, .fcard.rojo .fd { color: #c62828; }
+.fcard.rojo .fl { background: #c62828; }
+
+/* BOTONES */
+.btn { padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; background: #fff; font-size: 13px; cursor: pointer; color: #333; transition: all .15s; margin: 4px; }
+.btn:hover { background: #eee; }
+.btn.azul { background: #1a5fa8; color: #fff; border-color: #1a5fa8; }
+.btn.azul:hover { background: #134e8a; }
+.btn.verde { background: #2e7d32; color: #fff; border-color: #2e7d32; }
+.btn.naranja { background: #e65100; color: #fff; border-color: #e65100; }
+
+/* INFO BOX */
+.info-box { background: #f9f9f6; border-radius: 10px; border: 1px solid #e0e0e0; padding: 14px 16px; margin-top: 12px; font-size: 14px; color: #333; line-height: 1.8; min-height: 60px; }
+.tag-si { display: inline-block; background: #e8f5e9; color: #2e7d32; border-radius: 6px; padding: 2px 10px; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+.tag-no { display: inline-block; background: #ffebee; color: #c62828; border-radius: 6px; padding: 2px 10px; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+
+/* EJERCICIO INTERACTIVO */
+.ejercicio { background: #fff; border-radius: 10px; border: 1px solid #e0e0e0; padding: 14px 16px; margin-bottom: 12px; }
+.ejercicio .enunciado { font-size: 15px; font-weight: bold; margin-bottom: 10px; color: #333; }
+.frac-grande { font-size: 22px; font-weight: bold; display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 6px; }
+.frac-grande .frac-linea { width: 100%; height: 2px; background: #333; margin: 2px 0; }
+
+/* INPUT RESPUESTA */
+.resp-input { width: 60px; height: 36px; font-size: 16px; font-weight: bold; text-align: center; border: 2px solid #ccc; border-radius: 8px; color: #333; }
+.resp-input:focus { outline: none; border-color: #1a5fa8; }
+.resp-input.correcto { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; }
+.resp-input.incorrecto { border-color: #c62828; background: #ffebee; color: #c62828; }
+
+/* OPCIONES MULTIPLE */
+.opciones { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.opcion { padding: 8px 16px; border-radius: 8px; border: 2px solid #ddd; background: #fff; font-size: 14px; cursor: pointer; transition: all .15s; }
+.opcion:hover { border-color: #1a5fa8; background: #e8f1fb; }
+.opcion.correcto { border-color: #2e7d32; background: #e8f5e9; color: #2e7d32; font-weight: bold; }
+.opcion.incorrecto { border-color: #c62828; background: #ffebee; color: #c62828; }
+.opcion.disabled { pointer-events: none; opacity: .6; }
+
+/* FEEDBACK */
+.feedback { font-size: 13px; margin-top: 8px; padding: 8px 12px; border-radius: 8px; display: none; }
+.feedback.ok { background: #e8f5e9; color: #2e7d32; display: block; }
+.feedback.mal { background: #ffebee; color: #c62828; display: block; }
+
+/* PROGRESO */
+.progreso-bar { background: #e0e0e0; border-radius: 10px; height: 8px; margin: 6px 0 14px; overflow: hidden; }
+.progreso-fill { background: #1a5fa8; height: 100%; border-radius: 10px; transition: width .4s; }
+.progreso-txt { font-size: 12px; color: #888; margin-bottom: 4px; }
+
+/* RECTA NUMERICA */
+#recta-svg { width: 100%; border-radius: 10px; background: #fff; border: 1px solid #e0e0e0; }
+
+/* TABLA COMPARACION */
+.tabla-comp { width: 100%; border-collapse: collapse; font-size: 14px; margin: 10px 0; }
+.tabla-comp th { background: #1a5fa8; color: #fff; padding: 8px 12px; text-align: center; }
+.tabla-comp td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #eee; }
+.tabla-comp tr:hover td { background: #f5f5f0; }
+
+/* SCORE */
+.score-box { background: #e8f1fb; border-radius: 12px; padding: 16px; text-align: center; margin-top: 16px; }
+.score-num { font-size: 36px; font-weight: bold; color: #1a5fa8; }
+.score-txt { font-size: 14px; color: #555; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📐 Guía Q+ — Fracciones y Decimales</h1>
+  <p>Tocá cada sección para practicar. ¡Todas las respuestas se corrigen automáticamente!</p>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="irA('s1',this)">1. Fracción decimal</button>
+  <button class="nav-btn" onclick="irA('s2',this)">2. Fracciones equivalentes</button>
+  <button class="nav-btn" onclick="irA('s3',this)">3. Fracción irreducible</button>
+  <button class="nav-btn" onclick="irA('s4',this)">4. Comparar fracciones</button>
+  <button class="nav-btn" onclick="irA('s5',this)">5. Recta numérica</button>
+</nav>
+
+<!-- ===================== SECCION 1: FRACCION DECIMAL ===================== -->
+<div class="seccion activa" id="s1">
+
+  <div class="card">
+    <h3>¿Cuándo una fracción ES decimal?</h3>
+    <p>Una fracción se puede escribir como decimal <b>exacto</b> cuando su denominador, una vez simplificada la fracción, solo tiene como factores primos al <b>2</b> y/o al <b>5</b>.</p>
+    <div class="regla">
+      10 = 2 × 5 → Por eso, si el denominador es solo 2s y 5s, podemos convertirlo en 10, 100, 1.000, etc.<br>
+      ✔ 4 = 2² → decimal &nbsp;|&nbsp; ✔ 25 = 5² → decimal &nbsp;|&nbsp; ✘ 3, 7, 11... → NO decimal
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Práctica — ¿Es fracción decimal? (Tocá para ver)</h3>
+    <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn azul" onclick="mostrarTodasS1()">Ver todas las respuestas</button>
+      <button class="btn" onclick="resetS1()">Reiniciar</button>
+    </div>
+    <div class="grilla-4" id="grilla-s1"></div>
+    <div class="info-box" id="info-s1">👆 Tocá una fracción para ver el análisis.</div>
+  </div>
+
+  <div class="card">
+    <h3>Convertí a decimal — escribí el resultado</h3>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;">Dividí numerador ÷ denominador</p>
+    <div id="ejercicios-conv"></div>
+    <div style="margin-top:10px;">
+      <button class="btn azul" onclick="verificarConv()">Verificar respuestas</button>
+      <button class="btn" onclick="resetConv()">Reiniciar</button>
+    </div>
+    <div class="info-box" id="info-conv" style="margin-top:10px;display:none;"></div>
+  </div>
+
+</div>
+
+<!-- ===================== SECCION 2: FRACCIONES EQUIVALENTES ===================== -->
+<div class="seccion" id="s2">
+
+  <div class="card">
+    <h3>¿Qué son fracciones equivalentes?</h3>
+    <p>Dos fracciones son equivalentes cuando representan la misma cantidad, aunque tengan numerador y denominador distintos.</p>
+    <div class="regla">
+      Para encontrar equivalentes: multiplicá o dividí el numerador y el denominador por el <b>mismo número</b>.<br>
+      Ejemplo: 1/2 = 2/4 = 3/6 = 50/100 → ¡todas son la mitad!
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Completá el número que falta</h3>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;">Escribí el número que hace que las fracciones sean equivalentes</p>
+    <div id="ejercicios-equiv"></div>
+    <div style="margin-top:10px;">
+      <button class="btn azul" onclick="verificarEquiv()">Verificar</button>
+      <button class="btn" onclick="resetEquiv()">Reiniciar</button>
+    </div>
+    <div class="info-box" id="info-equiv" style="margin-top:10px;display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h3>¿Son equivalentes? Elegí la respuesta correcta</h3>
+    <div id="ejercicios-equiv2"></div>
+  </div>
+
+</div>
+
+<!-- ===================== SECCION 3: FRACCION IRREDUCIBLE ===================== -->
+<div class="seccion" id="s3">
+
+  <div class="card">
+    <h3>¿Qué es una fracción irreducible?</h3>
+    <p>Una fracción es <b>irreducible</b> cuando ya no se puede simplificar más: el numerador y el denominador no tienen ningún divisor común además del 1.</p>
+    <div class="regla">
+      Para simplificar: buscá el <b>MCD</b> (máximo común divisor) del numerador y denominador, y dividí los dos por ese número.<br>
+      Ejemplo: 12/18 → MCD(12,18) = 6 → 12÷6 / 18÷6 = <b>2/3</b> ✔
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Encontrá la fracción irreducible</h3>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;">Escribí la fracción ya simplificada (numerador y denominador separados)</p>
+    <div id="ejercicios-irred"></div>
+    <div style="margin-top:10px;">
+      <button class="btn azul" onclick="verificarIrred()">Verificar</button>
+      <button class="btn" onclick="resetIrred()">Reiniciar</button>
+    </div>
+    <div class="info-box" id="info-irred" style="margin-top:10px;display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h3>Decimales → fracción irreducible</h3>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;">Convertí el decimal a fracción y simplificá</p>
+    <div id="ejercicios-dec2frac"></div>
+    <div style="margin-top:10px;">
+      <button class="btn azul" onclick="verificarDec2frac()">Verificar</button>
+      <button class="btn" onclick="resetDec2frac()">Reiniciar</button>
+    </div>
+    <div class="info-box" id="info-dec2frac" style="margin-top:10px;display:none;"></div>
+  </div>
+
+</div>
+
+<!-- ===================== SECCION 4: COMPARAR FRACCIONES ===================== -->
+<div class="seccion" id="s4">
+
+  <div class="card">
+    <h3>¿Cómo comparar fracciones?</h3>
+    <p><b>Mismo denominador:</b> el mayor es el que tiene más en el numerador.<br>
+    <b>Distinto denominador:</b> buscá un denominador común (LCD) y convertí las dos fracciones.</p>
+    <div class="regla">
+      Truco rápido: hacé la "multiplicación en cruz".<br>
+      a/b vs c/d → comparás a×d con b×c. El mayor producto indica la fracción mayor.
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Completá con &lt;, = o &gt;</h3>
+    <div id="ejercicios-comp"></div>
+    <div style="margin-top:10px;">
+      <button class="btn azul" onclick="verificarComp()">Verificar</button>
+      <button class="btn" onclick="resetComp()">Reiniciar</button>
+    </div>
+    <div class="info-box" id="info-comp" style="margin-top:10px;display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h3>Ordená de menor a mayor</h3>
+    <div id="ejercicios-orden"></div>
+  </div>
+
+</div>
+
+<!-- ===================== SECCION 5: RECTA NUMERICA ===================== -->
+<div class="seccion" id="s5">
+
+  <div class="card">
+    <h3>Recta numérica interactiva</h3>
+    <p style="font-size:14px;color:#555;margin-bottom:12px;">Tocá cada número para ver cómo calcularlo y ubicarlo en la recta:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;" id="botones-recta"></div>
+    <svg id="recta-svg" viewBox="0 0 640 110">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M2 2L8 5L2 8" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+      <line x1="20" y1="60" x2="615" y2="60" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+      <g id="ticks-recta"></g>
+      <g id="puntos-recta"></g>
+    </svg>
+    <div class="info-box" id="info-recta" style="margin-top:12px;">👆 Tocá un número para verlo en la recta.</div>
+  </div>
+
+  <div class="card">
+    <h3>¿A qué número corresponde cada punto?</h3>
+    <p style="font-size:13px;color:#666;margin-bottom:12px;">Mirá la posición en la recta y elegí la fracción correcta</p>
+    <div id="ejercicios-punto"></div>
+  </div>
+
+</div>
+
+<script>
+// ==================== NAVEGACION ====================
+function irA(id, btn) {
+  document.querySelectorAll('.seccion').forEach(s => s.classList.remove('activa'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('activa');
+  btn.classList.add('active');
+}
+
+// ==================== UTILIDADES ====================
+function mcd(a, b) { return b === 0 ? a : mcd(b, a % b); }
+function simplificar(n, d) { const g = mcd(Math.abs(n), Math.abs(d)); return [n/g, d/g]; }
+
+// ==================== SECCION 1: FRACCION DECIMAL ====================
+const fracDecimals = [
+  {letra:'a', num:74,  den:200, es:true,  exp:'200 = 2³×5². Solo 2 y 5. → 74/200 = 0,37'},
+  {letra:'b', num:4,   den:3,   es:false, exp:'3 es primo distinto de 2 y 5. → 4/3 = 1,333...'},
+  {letra:'c', num:7,   den:2,   es:true,  exp:'2 es válido. → 7/2 = 3,5'},
+  {letra:'d', num:4,   den:9,   es:false, exp:'9 = 3×3. El 3 no vale. → 4/9 = 0,444...'},
+  {letra:'e', num:19,  den:25,  es:true,  exp:'25 = 5². Solo 5. → 19/25 = 0,76'},
+  {letra:'f', num:14,  den:49,  es:false, exp:'49 = 7×7. El 7 no vale. → 14/49 = 2/7 ≈ 0,2857...'},
+  {letra:'g', num:11,  den:13,  es:false, exp:'13 es primo y no es 2 ni 5. → periódico'},
+  {letra:'h', num:21,  den:35,  es:true,  exp:'35=5×7, pero 21/35 = 3/5. Simplificado el den. es 5. → 0,6'},
+  {letra:'i', num:3,   den:8,   es:true,  exp:'8 = 2³. Solo 2. → 3/8 = 0,375'},
+  {letra:'j', num:5,   den:6,   es:false, exp:'6 = 2×3. Tiene un 3. → 5/6 = 0,8333...'},
+  {letra:'k', num:9,   den:40,  es:true,  exp:'40 = 2³×5. Solo 2 y 5. → 9/40 = 0,225'},
+  {letra:'l', num:7,   den:14,  es:true,  exp:'7/14 = 1/2. Simplificado el den. es 2. → 0,5'},
+];
+
+function buildGrillaS1() {
+  document.getElementById('grilla-s1').innerHTML = fracDecimals.map(f => `
+    <div class="fcard" id="fc-${f.letra}" onclick="selS1('${f.letra}')">
+      <div class="fn">${f.num}</div>
+      <div class="fl"></div>
+      <div class="fd">${f.den}</div>
+      <div class="flet">${f.letra}.</div>
+    </div>`).join('');
+}
+
+function selS1(letra) {
+  const f = fracDecimals.find(x => x.letra === letra);
+  const card = document.getElementById('fc-' + letra);
+  card.classList.remove('verde','rojo');
+  card.classList.add(f.es ? 'verde' : 'rojo');
+  const tag = f.es ? '<span class="tag-si">✔ SÍ es fracción decimal</span>' : '<span class="tag-no">✘ NO es fracción decimal</span>';
+  document.getElementById('info-s1').innerHTML = `<b>${f.num}/${f.den}</b><br>${tag}<br>${f.exp}`;
+}
+
+function mostrarTodasS1() {
+  fracDecimals.forEach(f => {
+    const c = document.getElementById('fc-' + f.letra);
+    c.classList.remove('verde','rojo');
+    c.classList.add(f.es ? 'verde' : 'rojo');
+  });
+  document.getElementById('info-s1').innerHTML = '<b style="color:#2e7d32">Verde = SÍ decimal</b> &nbsp;|&nbsp; <b style="color:#c62828">Rojo = NO decimal</b>. Tocá cualquiera para ver el porqué.';
+}
+
+function resetS1() {
+  fracDecimals.forEach(f => { const c = document.getElementById('fc-' + f.letra); c.classList.remove('verde','rojo'); });
+  document.getElementById('info-s1').innerHTML = '👆 Tocá una fracción para ver el análisis.';
+}
+
+// Convertir a decimal
+const convEj = [
+  {num:3,  den:4,  ans:'0,75'},
+  {num:7,  den:8,  ans:'0,875'},
+  {num:1,  den:5,  ans:'0,2'},
+  {num:9,  den:20, ans:'0,45'},
+  {num:3,  den:25, ans:'0,12'},
+  {num:11, den:40, ans:'0,275'},
+  {num:13, den:50, ans:'0,26'},
+  {num:7,  den:16, ans:'0,4375'},
+];
+
+function buildConv() {
+  document.getElementById('ejercicios-conv').innerHTML = convEj.map((e,i) => `
+    <div class="ejercicio" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:16px;font-weight:bold;min-width:20px;">${i+1}.</span>
+      <span style="font-size:22px;font-weight:bold;">${e.num}</span>
+      <span style="display:flex;flex-direction:column;align-items:center;">
+        <div style="width:30px;height:2px;background:#333;margin:2px 0;"></div>
+      </span>
+      <span style="font-size:22px;font-weight:bold;">${e.den}</span>
+      <span style="font-size:16px;color:#666;">= </span>
+      <input class="resp-input" id="conv-${i}" placeholder="?" maxlength="8">
+    </div>`).join('');
+}
+
+function verificarConv() {
+  let ok = 0;
+  convEj.forEach((e,i) => {
+    const inp = document.getElementById('conv-' + i);
+    const val = inp.value.trim().replace(',','.');
+    const correcto = Math.abs(parseFloat(val) - (e.num/e.den)) < 0.0001;
+    inp.classList.remove('correcto','incorrecto');
+    inp.classList.add(correcto ? 'correcto' : 'incorrecto');
+    if (correcto) ok++;
+  });
+  const info = document.getElementById('info-conv');
+  info.style.display = 'block';
+  info.innerHTML = `Correctas: <b>${ok}/${convEj.length}</b>. ${ok===convEj.length ? '🎉 ¡Perfecto!' : 'Revisá las marcadas en rojo.'}`;
+}
+
+function resetConv() {
+  convEj.forEach((_,i) => {
+    const inp = document.getElementById('conv-' + i);
+    inp.value = '';
+    inp.classList.remove('correcto','incorrecto');
+  });
+  document.getElementById('info-conv').style.display = 'none';
+}
+
+// ==================== SECCION 2: EQUIVALENTES ====================
+const equivEj = [
+  {base:[3,9],  target:18, ans:6,   texto:'3/9 = ?/18'},
+  {base:[3,9],  target:null, ans2:15, texto2:'3/9 = 15/?', targetNum:15, denAns:45},
+  {base:[15,2], target:10, ans:75,  texto:'15/2 = ?/10'},
+  {base:[20,8], target:null, ans2:5,  texto2:'20/8 = 5/?', targetNum:5, denAns:2},
+  {base:[48,3], target:4,  ans:64,  texto:'48/3 = ?/4'},
+  {base:[1,4],  target:100,ans:25,  texto:'1/4 = ?/100'},
+  {base:[2,3],  target:12, ans:8,   texto:'2/3 = ?/12'},
+  {base:[5,6],  target:30, ans:25,  texto:'5/6 = ?/30'},
+  {base:[3,7],  target:21, ans:9,   texto:'3/7 = ?/21'},
+  {base:[4,5],  target:25, ans:20,  texto:'4/5 = ?/25'},
+];
+
+// Simplificado: solo ejercicios de "completar numerador"
+const equivSimple = [
+  {n1:3, d1:9,  d2:18, ansN:6},
+  {n1:15,d1:2,  d2:10, ansN:75},
+  {n1:1, d1:4,  d2:100,ansN:25},
+  {n1:2, d1:3,  d2:12, ansN:8},
+  {n1:5, d1:6,  d2:30, ansN:25},
+  {n1:3, d1:7,  d2:21, ansN:9},
+  {n1:4, d1:5,  d2:25, ansN:20},
+  {n1:7, d1:8,  d2:40, ansN:35},
+  {n1:3, d1:4,  d2:20, ansN:15},
+  {n1:5, d1:9,  d2:45, ansN:25},
+  {n1:2, d1:7,  d2:35, ansN:10},
+  {n1:6, d1:11, d2:33, ansN:18},
+];
+
+function buildEquiv() {
+  document.getElementById('ejercicios-equiv').innerHTML = equivSimple.map((e,i) => `
+    <div class="ejercicio" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <span style="font-weight:bold;min-width:20px;">${i+1}.</span>
+      <span style="font-size:20px;font-weight:bold;">${e.n1}</span><span style="display:flex;flex-direction:column;align-items:center;margin:0 2px;"><div style="width:24px;height:2px;background:#333;"></div></span><span style="font-size:20px;font-weight:bold;">${e.d1}</span>
+      <span style="font-size:18px;color:#666;"> = </span>
+      <input class="resp-input" id="equiv-${i}" placeholder="?" maxlength="6" style="width:55px;">
+      <span style="display:flex;flex-direction:column;align-items:center;margin:0 2px;"><div style="width:24px;height:2px;background:#333;"></div></span>
+      <span style="font-size:20px;font-weight:bold;">${e.d2}</span>
+    </div>`).join('');
+}
+
+function verificarEquiv() {
+  let ok = 0;
+  equivSimple.forEach((e,i) => {
+    const inp = document.getElementById('equiv-' + i);
+    const val = parseInt(inp.value.trim());
+    const correcto = val === e.ansN;
+    inp.classList.remove('correcto','incorrecto');
+    inp.classList.add(correcto ? 'correcto' : 'incorrecto');
+    if (correcto) ok++;
+  });
+  const info = document.getElementById('info-equiv');
+  info.style.display = 'block';
+  info.innerHTML = `Correctas: <b>${ok}/${equivSimple.length}</b>. ${ok===equivSimple.length ? '🎉 ¡Excelente!' : 'Las rojas están incorrectas. Revisá el factor que multiplica al denominador.'}`;
+}
+
+function resetEquiv() {
+  equivSimple.forEach((_,i) => { const inp=document.getElementById('equiv-'+i); inp.value=''; inp.classList.remove('correcto','incorrecto'); });
+  document.getElementById('info-equiv').style.display='none';
+}
+
+// Equivalentes sí/no
+const equiv2Ej = [
+  {a:[1,2], b:[3,6],  es:true},
+  {a:[2,3], b:[4,9],  es:false},
+  {a:[5,8], b:[15,24],es:true},
+  {a:[3,4], b:[6,10], es:false},
+  {a:[7,9], b:[14,18],es:true},
+  {a:[4,6], b:[6,9],  es:true},
+];
+
+function buildEquiv2() {
+  document.getElementById('ejercicios-equiv2').innerHTML = equiv2Ej.map((e,i) => `
+    <div class="ejercicio" style="margin-bottom:12px;">
+      <div class="enunciado">
+        <span style="font-size:20px;font-weight:bold;">${e.a[0]}/${e.a[1]}</span>
+        <span style="font-size:16px;color:#666;margin:0 8px;">y</span>
+        <span style="font-size:20px;font-weight:bold;">${e.b[0]}/${e.b[1]}</span>
+        <span style="font-size:14px;color:#666;margin-left:8px;">¿son equivalentes?</span>
+      </div>
+      <div class="opciones">
+        <div class="opcion" onclick="respEquiv2(this,${i},true)">Sí son equivalentes</div>
+        <div class="opcion" onclick="respEquiv2(this,${i},false)">No son equivalentes</div>
+      </div>
+      <div class="feedback" id="fb-equiv2-${i}"></div>
+    </div>`).join('');
+}
+
+function respEquiv2(el, i, resp) {
+  const ej = equiv2Ej[i];
+  const correcto = resp === ej.es;
+  el.classList.add(correcto ? 'correcto' : 'incorrecto');
+  el.parentElement.querySelectorAll('.opcion').forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById('fb-equiv2-' + i);
+  const cruz = ej.a[0]*ej.b[1];
+  const cruz2 = ej.b[0]*ej.a[1];
+  fb.className = 'feedback ' + (correcto ? 'ok' : 'mal');
+  fb.innerHTML = correcto
+    ? `✔ ¡Correcto! ${ej.a[0]}×${ej.b[1]}=${cruz} y ${ej.b[0]}×${ej.a[1]}=${cruz2} → ${cruz===cruz2?'iguales = equivalentes':'distintos = no equivalentes'}`
+    : `✘ Era: ${ej.es?'SÍ':'NO'}. ${ej.a[0]}×${ej.b[1]}=${cruz} y ${ej.b[0]}×${ej.a[1]}=${cruz2} → ${cruz===cruz2?'iguales':'distintos'}`;
+}
+
+// ==================== SECCION 3: IRREDUCIBLE ====================
+const irredEj = [
+  {num:15, den:50, rn:3, rd:10},
+  {num:63, den:180,rn:7, rd:20},
+  {num:45, den:100,rn:9, rd:20},
+  {num:12, den:18, rn:2, rd:3},
+  {num:24, den:36, rn:2, rd:3},
+  {num:48, den:64, rn:3, rd:4},
+  {num:35, den:56, rn:5, rd:8},
+  {num:14, den:21, rn:2, rd:3},
+  {num:30, den:45, rn:2, rd:3},
+  {num:16, den:24, rn:2, rd:3},
+  {num:27, den:36, rn:3, rd:4},
+  {num:20, den:32, rn:5, rd:8},
+];
+
+function buildIrred() {
+  document.getElementById('ejercicios-irred').innerHTML = irredEj.map((e,i) => `
+    <div class="ejercicio" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <span style="font-weight:bold;min-width:20px;">${i+1}.</span>
+      <span style="font-size:20px;font-weight:bold;">${e.num}</span><span style="margin:0 2px;"><div style="width:24px;height:2px;background:#333;margin:2px 0;"></div></span><span style="font-size:20px;font-weight:bold;">${e.den}</span>
+      <span style="font-size:16px;color:#666;margin:0 4px;">=</span>
+      <input class="resp-input" id="irr-n-${i}" placeholder="?" maxlength="5" style="width:50px;">
+      <span style="margin:0 2px;"><div style="width:20px;height:2px;background:#333;margin:2px 0;"></div></span>
+      <input class="resp-input" id="irr-d-${i}" placeholder="?" maxlength="5" style="width:50px;">
+    </div>`).join('');
+}
+
+function verificarIrred() {
+  let ok = 0;
+  irredEj.forEach((e,i) => {
+    const ni = document.getElementById('irr-n-' + i);
+    const di = document.getElementById('irr-d-' + i);
+    const nv = parseInt(ni.value), dv = parseInt(di.value);
+    const correcto = nv === e.rn && dv === e.rd;
+    ni.classList.remove('correcto','incorrecto'); di.classList.remove('correcto','incorrecto');
+    ni.classList.add(correcto ? 'correcto' : 'incorrecto');
+    di.classList.add(correcto ? 'correcto' : 'incorrecto');
+    if (correcto) ok++;
+  });
+  const info = document.getElementById('info-irred');
+  info.style.display = 'block';
+  info.innerHTML = `Correctas: <b>${ok}/${irredEj.length}</b>. ${ok===irredEj.length ? '🎉 ¡Perfecto!' : 'Revisá las rojas. Buscá el MCD y dividí los dos por ese número.'}`;
+}
+
+function resetIrred() {
+  irredEj.forEach((_,i) => {
+    ['irr-n-','irr-d-'].forEach(p => { const inp=document.getElementById(p+i); inp.value=''; inp.classList.remove('correcto','incorrecto'); });
+  });
+  document.getElementById('info-irred').style.display='none';
+}
+
+// Decimal a fracción irreducible
+const dec2fracEj = [
+  {dec:'0,6',  rn:3,  rd:5},
+  {dec:'1,22', rn:61, rd:50},
+  {dec:'2,35', rn:47, rd:20},
+  {dec:'0,255',rn:51, rd:200},
+  {dec:'0,75', rn:3,  rd:4},
+  {dec:'1,5',  rn:3,  rd:2},
+  {dec:'0,8',  rn:4,  rd:5},
+  {dec:'0,125',rn:1,  rd:8},
+  {dec:'2,4',  rn:12, rd:5},
+  {dec:'0,36', rn:9,  rd:25},
+];
+
+function buildDec2frac() {
+  document.getElementById('ejercicios-dec2frac').innerHTML = dec2fracEj.map((e,i) => `
+    <div class="ejercicio" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <span style="font-weight:bold;min-width:20px;">${i+1}.</span>
+      <span style="font-size:18px;font-weight:bold;">${e.dec}</span>
+      <span style="font-size:16px;color:#666;">=</span>
+      <input class="resp-input" id="d2f-n-${i}" placeholder="?" maxlength="5" style="width:55px;">
+      <span style="margin:0 2px;"><div style="width:20px;height:2px;background:#333;margin:2px 0;"></div></span>
+      <input class="resp-input" id="d2f-d-${i}" placeholder="?" maxlength="5" style="width:55px;">
+    </div>`).join('');
+}
+
+function verificarDec2frac() {
+  let ok = 0;
+  dec2fracEj.forEach((e,i) => {
+    const ni=document.getElementById('d2f-n-'+i), di=document.getElementById('d2f-d-'+i);
+    const nv=parseInt(ni.value), dv=parseInt(di.value);
+    // aceptar fraccion equivalente simplificada
+    const correcto = (nv===e.rn && dv===e.rd);
+    ni.classList.remove('correcto','incorrecto'); di.classList.remove('correcto','incorrecto');
+    ni.classList.add(correcto?'correcto':'incorrecto');
+    di.classList.add(correcto?'correcto':'incorrecto');
+    if (correcto) ok++;
+  });
+  const info=document.getElementById('info-dec2frac');
+  info.style.display='block';
+  info.innerHTML=`Correctas: <b>${ok}/${dec2fracEj.length}</b>. ${ok===dec2fracEj.length?'🎉 ¡Excelente!':'Recordá: decimal → fracción con potencia de 10 en denominador, luego simplificá.'}`;
+}
+
+function resetDec2frac() {
+  dec2fracEj.forEach((_,i) => {
+    ['d2f-n-','d2f-d-'].forEach(p => { const inp=document.getElementById(p+i); inp.value=''; inp.classList.remove('correcto','incorrecto'); });
+  });
+  document.getElementById('info-dec2frac').style.display='none';
+}
+
+// ==================== SECCION 4: COMPARAR ====================
+const compEj = [
+  {a:[7,8],   b:[9,10],  sig:'<'},
+  {a:[13,5],  b:[78,30], sig:'='},
+  {a:[6,1],   b:[58,9],  sig:'>'},
+  {a:[11,4],  b:[2,1],   sig:'>'},  // 2.75 > 2
+  {a:[3,4],   b:[5,7],   sig:'>'},
+  {a:[2,3],   b:[3,5],   sig:'>'},
+  {a:[1,2],   b:[3,7],   sig:'>'},
+  {a:[5,6],   b:[7,9],   sig:'>'},
+  {a:[4,5],   b:[9,11],  sig:'>'},
+  {a:[3,8],   b:[2,6],   sig:'<'},
+];
+
+function buildComp() {
+  document.getElementById('ejercicios-comp').innerHTML = compEj.map((e,i) => `
+    <div class="ejercicio" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <span style="font-weight:bold;min-width:20px;">${i+1}.</span>
+      <span style="font-size:20px;font-weight:bold;">${e.a[0]}/${e.a[1]}</span>
+      <input class="resp-input" id="comp-${i}" placeholder="?" maxlength="1" style="width:44px;font-size:20px;">
+      <span style="font-size:20px;font-weight:bold;">${e.b[0]}/${e.b[1]}</span>
+    </div>`).join('');
+}
+
+function verificarComp() {
+  let ok = 0;
+  compEj.forEach((e,i) => {
+    const inp=document.getElementById('comp-'+i);
+    const val=inp.value.trim();
+    const correcto = val === e.sig;
+    inp.classList.remove('correcto','incorrecto');
+    inp.classList.add(correcto?'correcto':'incorrecto');
+    if (correcto) ok++;
+  });
+  const info=document.getElementById('info-comp');
+  info.style.display='block';
+  info.innerHTML=`Correctas: <b>${ok}/${compEj.length}</b>. ${ok===compEj.length?'🎉 ¡Perfecto!':'Recordá: convertí a denominador común o usá la multiplicación en cruz.'}`;
+}
+
+function resetComp() {
+  compEj.forEach((_,i) => { const inp=document.getElementById('comp-'+i); inp.value=''; inp.classList.remove('correcto','incorrecto'); });
+  document.getElementById('info-comp').style.display='none';
+}
+
+// Ordenar de menor a mayor (opción múltiple)
+const ordenEj = [
+  {
+    fracs:['1/3','1/2','2/5'],
+    opciones:['1/3 → 2/5 → 1/2','1/2 → 1/3 → 2/5','2/5 → 1/3 → 1/2'],
+    correcta:0
+  },
+  {
+    fracs:['3/4','5/6','2/3'],
+    opciones:['2/3 → 3/4 → 5/6','3/4 → 2/3 → 5/6','5/6 → 3/4 → 2/3'],
+    correcta:0
+  },
+  {
+    fracs:['7/8','3/4','5/6'],
+    opciones:['3/4 → 5/6 → 7/8','7/8 → 5/6 → 3/4','5/6 → 3/4 → 7/8'],
+    correcta:0
+  },
+];
+
+function buildOrden() {
+  document.getElementById('ejercicios-orden').innerHTML = ordenEj.map((e,i) => `
+    <div class="ejercicio" style="margin-bottom:14px;">
+      <div class="enunciado">Ordená de menor a mayor: <b>${e.fracs.join(' — ')}</b></div>
+      <div class="opciones">
+        ${e.opciones.map((o,j) => `<div class="opcion" onclick="respOrden(this,${i},${j})">${o}</div>`).join('')}
+      </div>
+      <div class="feedback" id="fb-orden-${i}"></div>
+    </div>`).join('');
+}
+
+function respOrden(el, i, j) {
+  const ej=ordenEj[i];
+  const correcto = j === ej.correcta;
+  el.classList.add(correcto?'correcto':'incorrecto');
+  el.parentElement.querySelectorAll('.opcion').forEach(o => o.classList.add('disabled'));
+  const fb=document.getElementById('fb-orden-'+i);
+  fb.className='feedback '+(correcto?'ok':'mal');
+  fb.innerHTML = correcto ? '✔ ¡Correcto! Buscaste el denominador común para comparar.' : `✘ La correcta es: ${ej.opciones[ej.correcta]}`;
+}
+
+// ==================== SECCION 5: RECTA NUMERICA ====================
+const rectaData = [
+  {key:'3/2',   val:1.5,  color:'#185FA5', label:'3/2 = 1,5',  explain:'Dividís 3 ÷ 2 = <b>1,5</b>. Entre el 1 y el 2.'},
+  {key:'−0,75', val:-0.75,color:'#993556', label:'−0,75',      explain:'Negativo: va a la izquierda del 0. Entre −1 y 0.'},
+  {key:'√16',   val:4,    color:'#3B6D11', label:'√16 = 4',    explain:'4 × 4 = 16. Cae exactamente en el 4.'},
+  {key:'2³',    val:8,    color:'#854F0B', label:'2³ = 8',     explain:'2 × 2 × 2 = 8. Cae exactamente en el 8.'},
+  {key:'7/4',   val:1.75, color:'#533AB7', label:'7/4 = 1,75', explain:'7 ÷ 4 = <b>1,75</b>. Entre 1 y 2, adelante de 3/2.'},
+  {key:'1,25',  val:1.25, color:'#0F6E56', label:'1,25',       explain:'<b>1,25</b>. Entre 1 y 2, el más cercano al 1.'},
+];
+
+const RMIN=-1.5, RMAX=9, RX1=30, RX2=600;
+function rToX(v) { return RX1 + (v-RMIN)/(RMAX-RMIN)*(RX2-RX1); }
+
+function buildRectaBotones() {
+  document.getElementById('botones-recta').innerHTML = rectaData.map(d =>
+    `<button class="btn" style="border-color:${d.color};color:${d.color};" onclick="selRecta('${d.key}',this)">${d.key}</button>`
+  ).join('');
+}
+
+function buildRectaAxis() {
+  let html='';
+  for(let i=-1;i<=8;i++){
+    const x=rToX(i);
+    html+=`<line x1="${x}" y1="54" x2="${x}" y2="66" stroke="#888" stroke-width="${i===0?2:1}"/>`;
+    html+=`<text x="${x}" y="83" text-anchor="middle" font-size="12" font-family="Arial" fill="${i===0?'#222':'#888'}" font-weight="${i===0?'bold':'normal'}">${i}</text>`;
+  }
+  document.getElementById('ticks-recta').innerHTML=html;
+}
+
+let activeRectaKey=null;
+function selRecta(key, btn) {
+  activeRectaKey=key;
+  document.querySelectorAll('#botones-recta .btn').forEach(b => { b.style.fontWeight='normal'; b.style.background='#fff'; });
+  const d=rectaData.find(x=>x.key===key);
+  btn.style.fontWeight='bold'; btn.style.background=d.color+'22';
+  let html='';
+  rectaData.forEach(r => {
+    const x=rToX(r.val), isA=r.key===key;
+    html+=`<circle cx="${x}" cy="60" r="${isA?7:5}" fill="${r.color}" opacity="${isA?1:0.28}"/>`;
+    if(isA){
+      html+=`<text x="${x}" y="36" text-anchor="middle" font-size="12" font-weight="bold" fill="${r.color}" font-family="Arial">${r.label}</text>`;
+      html+=`<line x1="${x}" y1="40" x2="${x}" y2="52" stroke="${r.color}" stroke-width="1" stroke-dasharray="2 2"/>`;
+    }
+  });
+  document.getElementById('puntos-recta').innerHTML=html;
+  document.getElementById('info-recta').innerHTML=`<b>${d.label}</b><br>${d.explain}`;
+}
+
+// Ejercicios de punto en recta
+const puntoEj = [
+  {pos:0.5,  opciones:['1/4','1/2','3/4','1/3'], correcta:1},
+  {pos:2.5,  opciones:['5/3','5/2','7/3','8/3'], correcta:1},
+  {pos:0.25, opciones:['1/4','1/5','1/3','2/5'], correcta:0},
+  {pos:1.333,opciones:['4/3','5/4','3/2','7/5'], correcta:0},
+];
+
+function buildPunto() {
+  document.getElementById('ejercicios-punto').innerHTML = puntoEj.map((e,i) => {
+    const px = rToX(e.pos);
+    return `
+    <div class="ejercicio" style="margin-bottom:14px;">
+      <div class="enunciado">El punto marcado en la recta es...</div>
+      <svg style="width:100%;border-radius:8px;background:#f9f9f6;border:1px solid #eee;" viewBox="0 0 640 70">
+        <line x1="20" y1="40" x2="615" y2="40" stroke="#888" stroke-width="1.5"/>
+        ${[-1,0,1,2,3,4].map(n=>`
+          <line x1="${rToX(n)}" y1="34" x2="${rToX(n)}" y2="46" stroke="#888"/>
+          <text x="${rToX(n)}" y="60" text-anchor="middle" font-size="11" font-family="Arial" fill="#888">${n}</text>
+        `).join('')}
+        <circle cx="${px}" cy="40" r="6" fill="#1a5fa8"/>
+        <text x="${px}" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a5fa8">?</text>
+      </svg>
+      <div class="opciones" style="margin-top:8px;">
+        ${e.opciones.map((o,j)=>`<div class="opcion" onclick="respPunto(this,${i},${j})">${o}</div>`).join('')}
+      </div>
+      <div class="feedback" id="fb-punto-${i}"></div>
+    </div>`;
+  }).join('');
+}
+
+function respPunto(el,i,j){
+  const ej=puntoEj[i];
+  const correcto=j===ej.correcta;
+  el.classList.add(correcto?'correcto':'incorrecto');
+  el.parentElement.querySelectorAll('.opcion').forEach(o=>o.classList.add('disabled'));
+  const fb=document.getElementById('fb-punto-'+i);
+  fb.className='feedback '+(correcto?'ok':'mal');
+  fb.innerHTML=correcto?'✔ ¡Correcto!':'✘ Era: '+ej.opciones[ej.correcta];
+}
+
+// ==================== INIT ====================
+buildGrillaS1();
+buildConv();
+buildEquiv();
+buildEquiv2();
+buildIrred();
+buildDec2frac();
+buildComp();
+buildOrden();
+buildRectaBotones();
+buildRectaAxis();
+buildPunto();
+</script>
+</body>
+</html>
